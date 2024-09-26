@@ -1,0 +1,10 @@
+# Vamos a ignorar los archivos que no queremos copiar al contenedor
+# los nodemodules no son necesarios en el contenedor
+node_modules/
+
+# package-lock.json es solo para npm
+package-lock.json
+
+# Dockerfile y .dockerignore no son necesarios en el contenedor
+Dockerfile
+.dockerignore

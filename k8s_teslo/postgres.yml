@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels:
+    app: database
+    component: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+      component: postgres
+  template:
+    metadata:
+      labels:
+        app: database
+        component: postgres
+    spec:
+      containers:
+      - name: postgres-container
+        image: postgres:15.8-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: database
+  ports:
+    - protocol: TCP
+      port: 5433 # Cualquier puerto.
+      targetPort: 5432
